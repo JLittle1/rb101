@@ -1,0 +1,1 @@
+<< always mutates the original object, while assigning with + will create pointers to new objects. They'll have the same variable, but the first implementation will mutate the buffer argument, not the second.

@@ -1,0 +1,8 @@
+! can be used as a boolean operator, but when used as part of a method name, it signifies that the method can mutate the caller or have other side effects (by convention) ? is a ternary operator, but when used as part of a method name, signifies that the method returns a boolean (by convention).
+
+1. != means is not equal. It's the opposite of ==.
+2. ! is the not operator. When put before a value, it gives the boolean that's the opposite of the value's truthiness.
+3. By convention ! at the end of a method means the method mutates the caller or has other side effects. Not all methods can be changed by adding a !; there is a limited amount included in Ruby. ! can also be used when naming your own methods.
+4. ? before two values seperated by a colon after a boolean expression is the syntax for a ternary operation.
+5. ? at the end of a method name by convention indicates the method returns a boolean. At the end of a variable name can indicate it points to a boolean.
+6. !! is just two !. This effectively turns any object into a boolean corresponding to the object's truthiness.

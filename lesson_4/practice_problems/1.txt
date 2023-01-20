@@ -1,0 +1,4 @@
+[1, 2, 3]
+#select evaluates its block for truthiness on each iteration through the array and returns a 
+new array containing the values for which the block is truthy. Because 'hi', the return value 
+of the block, is always truthy, #select selects all existing values.

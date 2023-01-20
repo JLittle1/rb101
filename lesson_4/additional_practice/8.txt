@@ -1,0 +1,7 @@
+The first iteration would look at index 0 of the numbers array, in this case 1. 1 would be 
+printed, then removed from the array in the block. The numbers array now looks like [2, 3, 4]. 
+The second iteration would look at index 1, which is now 3. 3 would be printed, then 2 would 
+be removed from numbers. There are no more iterations because numbers no longer has an index 
+2.
+
+In the second example, 1 would be printed, 4 removed. Then 2 would be printed, 3 removed.

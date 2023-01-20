@@ -1,0 +1,4 @@
+[1, nil, nil]
+When #map's block is passed 1 as an element, the else branch returns 1. However, for the other 
+two numbers, the if branch is reached instead of the else branch, and since #puts always 
+returns nil, that ends up in the returned array.

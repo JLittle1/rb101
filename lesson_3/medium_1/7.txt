@@ -1,0 +1,1 @@
+Yes. The original hash is still being referenced, just under a new variable name in the method. Even though lines 11 and 12 look like reassignment, they're actually using the [] method, which is a mutating method when used this way, changing the original hash.

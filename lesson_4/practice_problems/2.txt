@@ -1,0 +1,3 @@
+#count reyutns a number that counts the number of elements in the enumerable it's called on 
+for which #count's block evaluates to true. In this case, the return value is 2. You can find 
+this information and more in the Ruby docs for Array#count.

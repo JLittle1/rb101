@@ -1,0 +1,4 @@
+[nil, "bear"]
+Enumerable#map always returns a new array of the return values of the block passed to #map. 
+When the if statement evaluates to false, the block has no return value, so the first element 
+of the array in this case is nil.

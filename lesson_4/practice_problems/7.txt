@@ -1,0 +1,5 @@
+The block's return value is always true or false based on the last line, num.odd?. The return 
+value of #any? here is true because any returns a boolean based on whether any of its block 
+iterations return true. In this case, the first iteration is true. 1 is printed to the console 
+during this evaluation, but no other numbers are printed because the first iteration of the 
+block has already returned true, so #any doesn't evaluate any more iterations.

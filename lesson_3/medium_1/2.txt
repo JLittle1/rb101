@@ -1,0 +1,3 @@
+This line tries to add a string and an integer, which results in a TypeError.
+
+Use #to_s or string interpolation.

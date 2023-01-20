@@ -1,0 +1,2 @@
+Now all three variables will have the same object id, because integers are immutable. A single 
+integer will only take up one spot in memory.

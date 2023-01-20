@@ -1,0 +1,4 @@
+[1, 2, 3]
+#reject returns all values of the array it's called upon if the block returns a falsy 
+value (nil or false). In this case, because puts always returns nil, the original array is 
+returned.

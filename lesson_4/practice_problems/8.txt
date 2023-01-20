@@ -1,0 +1,3 @@
+#take here takes the first 2 elements of the caller array and returns them as a new array. It 
+is not destructive; in the docs, it explicitly states it returns a new array and does not 
+modify self.

@@ -1,0 +1,3 @@
+{"a"=>"ant", "b"=>"bear", "c"=>"cat"}
+#each_with_object always returns the object it's passed as a parameter, after iterating 
+through the enumerable that called it and evaluating the block for each iteration. 

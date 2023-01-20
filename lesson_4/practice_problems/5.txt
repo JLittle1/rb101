@@ -1,0 +1,3 @@
+By finding Hash#shift in the docs, we find that it removes the first element of the has and 
+returns a new array containing the key-value pair of that entry. In this case, it mutates the 
+caller by removing the :a entry and returning [:a, "ant"]

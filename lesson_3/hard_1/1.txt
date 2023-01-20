@@ -1,0 +1,5 @@
+You'll get an error because greeting hasn't been initialized yet. Line 2 will never be 
+executed.
+
+OR SO I THOUGHT. Apparently line 2 isn't executed, but variables that are assigned within an 
+if clause still get assigned to nil if they don't yet exist.

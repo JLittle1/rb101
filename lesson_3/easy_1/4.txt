@@ -1,0 +1,2 @@
+delete_at(1) will delete the element at index 1. In this case, 2.
+delete(1) will delete any elements of 1 in the array.
