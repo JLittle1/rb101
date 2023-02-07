@@ -1,0 +1,13 @@
+en:
+  welcome: 'Welcome to Calculator! Enter your name:'
+  invalid_name: 'Make sure to use a valid name.'
+  first_number: "What's the first number?"
+  invalid_number: "Hmm... That doesn't look like a valid number"
+  second_number: "What's the second number?"
+  operation_ask: "What operation would you like to perform?\x0A
+  \x20\x20\x20\x201) add\x0A
+  \x20\x20\x20\x202) subtract\x0A
+  \x20\x20\x20\x203) multiply\x0A
+  \x20\x20\x20\x204) divide\x0A"
+  invalid_operator: 'Must choose 1, 2, 3, or 4'
+  ask_another: "Do you want to perform another calculation? (Y to calculate again)"
