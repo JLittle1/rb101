@@ -12,7 +12,8 @@ end
 
 def valid_time?(input)
   /\d/.match(input) && /^\d*y?\d*m?$/.match(input) &&
-    (input.include?('y') || input.include?('m')) && time_to_months(input) > 0
+    (input.include?('y') || input.include?('m')) &&
+    time_to_months(input) > 0
 end
 
 def time_to_months(duration)
@@ -112,8 +113,9 @@ loop do
   loan_duration = get_loan_duration
 
   monthly_interest = apr / 12
-  monthly_payment =
-    calculate_monthly_payment(loan_amount, monthly_interest, loan_duration)
+  monthly_payment = calculate_monthly_payment(loan_amount,
+                                              monthly_interest,
+                                              loan_duration)
   total = monthly_payment * loan_duration
 
   display_calculations(monthly_interest, loan_duration, monthly_payment, total)
