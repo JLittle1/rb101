@@ -3,7 +3,7 @@ def prompt(message)
 end
 
 def valid_number?(number)
-  number.to_f.to_s.include?(number)
+  number.to_f > 0 && number.to_f.to_s.include?(number)
 end
 
 def valid_percentage?(input)
@@ -12,7 +12,7 @@ end
 
 def valid_time?(input)
   /\d/.match(input) && /^\d*y?\d*m?$/.match(input) &&
-    time_to_months(input) > 0
+    (input.include?('y') || input.include?('m')) && time_to_months(input) > 0
 end
 
 def time_to_months(duration)
@@ -39,7 +39,7 @@ def get_loan_amount
     loan_amount = gets.chomp.delete('$,')
     break if valid_number?(loan_amount)
 
-    prompt("Please enter a number.")
+    prompt("Please enter a valid positive number.")
   end
   loan_amount = loan_amount.to_f
 end
@@ -51,7 +51,7 @@ def get_apr
     apr = gets.chomp
     break if valid_percentage?(apr)
 
-    prompt("Please enter a number.")
+    prompt("Please enter a valid positive percentage.")
   end
   apr = apr.delete('%').to_f / 100
 end
@@ -66,6 +66,10 @@ def get_loan_duration
     prompt("Please enter a non-zero time duration in format XyXm")
   end
   loan_duration = time_to_months(loan_duration)
+end
+
+def calculate_monthly_payment(amount, interest, duration)
+  amount * (interest / (1 - (1 + interest)**-duration))
 end
 
 def display_calculations(interest, duration, payment, total)
@@ -108,8 +112,8 @@ loop do
   loan_duration = get_loan_duration
 
   monthly_interest = apr / 12
-  monthly_payment = loan_amount * (monthly_interest /
-    (1 - (1 + monthly_interest)**-loan_duration))
+  monthly_payment =
+    calculate_monthly_payment(loan_amount, monthly_interest, loan_duration)
   total = monthly_payment * loan_duration
 
   display_calculations(monthly_interest, loan_duration, monthly_payment, total)
