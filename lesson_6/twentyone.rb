@@ -26,7 +26,7 @@ end
 def dealer_turn!(deck, hand)
   score = calculate_score(hand)
   prompt("Dealer's hand: #{hand.inspect}")
-  while score < 21
+  while score < 17
     hand.push(deck.pop)
     score = calculate_score(hand)
     prompt('Dealer hits!')
@@ -39,9 +39,11 @@ def busted?(hand)
 end
 
 def player_won?(player, dealer)
-  return false if busted?(player)
-  return true if busted?(dealer)
-  calculate_score(player) >= calculate_score(dealer)
+  player_score = calculate_score(player)
+  dealer_score = calculate_score(dealer)
+  return true if dealer_score > 21 || player_score > dealer_score
+  return false if player_score > 21 || player_score < dealer_score
+  # Returns nil in event of a tie
 end
 
 def display_results(player, dealer, winner)
@@ -52,36 +54,47 @@ def display_results(player, dealer, winner)
   p dealer
   if winner
     prompt('Congratulations! You won!')
+  elsif winner.nil?
+    prompt("It's a tie!")
   else
-    prompt('House wins.')
+    prompt('Dealer wins.')
   end
 end
 
-deck = DECK.shuffle
-player_hand = deck.pop(2)
-dealer_hand = deck.pop(2)
-prompt("Dealer's revealed card: #{dealer_hand[0].inspect}")
+def play_again?
+  prompt('Would you like to play again?')
+  answer = gets.chomp.downcase
+  answer.start_with?('y')
+end
 
-prompt("Your hand: #{player_hand.inspect}")
-prompt("Your total: #{calculate_score(player_hand)}")
-answer = nil
 loop do
-  prompt("Hit or stay?")
-  answer = gets.chomp
-  break if answer == 'stay'
-  player_hand.push(deck.pop)
+  deck = DECK.shuffle
+  player_hand = deck.pop(2)
+  dealer_hand = deck.pop(2)
+  prompt("Dealer's revealed card: #{dealer_hand[0].inspect}")
+
   prompt("Your hand: #{player_hand.inspect}")
   prompt("Your total: #{calculate_score(player_hand)}")
-  break if busted?(player_hand)
-end
+  answer = nil
+  loop do
+    prompt('Hit or stay?')
+    answer = gets.chomp
+    break if answer == 'stay'
+    prompt('You hit!')
+    player_hand.push(deck.pop)
+    prompt("Your hand: #{player_hand.inspect}")
+    prompt("Your total: #{calculate_score(player_hand)}")
+    break if busted?(player_hand)
+  end
+  if busted?(player_hand)
+    prompt('You busted! Dealer wins.')
+    play_again? ? next : break
+  end
+  prompt('You chose to stay!')
 
-if busted?(player_hand)
-  prompt("You busted! Dealer wins.")
-  exit
-else
-  prompt("You chose to stay!")
+  prompt('Dealer turn...')
+  dealer_turn!(deck, dealer_hand)
+  winner = player_won?(player_hand, dealer_hand)
+  display_results(player_hand, dealer_hand, winner)
+  break unless play_again?
 end
-
-dealer_turn!(deck, dealer_hand)
-winner = player_won?(player_hand, dealer_hand)
-display_results(player_hand, dealer_hand, winner)
