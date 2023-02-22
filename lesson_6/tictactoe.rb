@@ -1,5 +1,3 @@
-require 'pry'
-
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # cols
                 [[1, 5, 9], [3, 5, 7]]              # diagonals
@@ -14,7 +12,7 @@ end
 # rubocop:disable Metrics/AbcSize
 def display_board(brd)
   system 'clear'
-  puts "You're #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}"
+  puts "You're #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}."
   puts ''
   puts '     |     |'
   puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
@@ -64,21 +62,22 @@ end
 def joinor(arr, seperator=', ', word='or')
   return arr[0].to_s if arr.size == 1
   return "#{arr[0]} #{word} #{arr[1]}" if arr.size == 2
-  arr[...-1].join(seperator) + seperator + word + ' ' + arr[-1].to_s
+  arr[0...-1].join(seperator) + seperator + word + ' ' + arr[-1].to_s
 end
 
 def computer_places_piece!(brd)
   square = find_winning_move(brd, COMPUTER_MARKER)
-  square = find_winning_move(brd, PLAYER_MARKER) unless square
-  square = 5 if !square && empty_squares(brd).include?(5)
-  square = empty_squares(brd).sample unless square
+  square ||= find_winning_move(brd, PLAYER_MARKER)
+  square ||= 5 if brd[5] == INITIAL_MARKER
+  square ||= empty_squares(brd).sample
   brd[square] = COMPUTER_MARKER
 end
 
 def find_winning_move(brd, marker)
   WINNING_LINES.each do |line|
     if brd.values_at(*line).count(marker) == 2
-      return empty_squares(brd).intersection(line)[0]
+      winning_move = empty_squares(brd).intersection(line)[0]
+      return winning_move if winning_move
     end
   end
   nil
@@ -107,7 +106,7 @@ def alternate_player(player)
   player == :player ? :computer : :player
 end
 
-def get_first_player
+def ask_first_player
   prompt('Who should play first? p for player, c for computer, r for random')
   loop do
     response = gets.chomp.downcase[0]
@@ -121,23 +120,35 @@ def get_first_player
 end
 
 loop do
-  board = initialize_board
-  current_player = get_first_player
-  loop do
+  score = { 'Player' => 0, 'Computer' => 0 }
+  winner = nil
+  until score['Player'] == 5 || score['Computer'] == 5
+
+    board = initialize_board
+    current_player = ask_first_player
+    loop do
+      display_board(board)
+      place_piece!(board, current_player)
+      current_player = alternate_player(current_player)
+      break if someone_won?(board) || board_full?(board)
+    end
+
     display_board(board)
-    place_piece!(board, current_player)
-    current_player = alternate_player(current_player)
-    break if someone_won?(board) || board_full?(board)
+
+    if someone_won?(board)
+      winner = detect_winner(board)
+      score[winner] += 1
+      prompt("#{winner} won! The score is #{score['Player']}-#{
+        score['Computer']}")
+    else
+      prompt("It's a tie! The score is #{score['Player']}-#{
+        score['Computer']}")
+    end
+
   end
 
-  display_board(board)
-
-  if someone_won?(board)
-    prompt("#{detect_winner(board)} won!")
-  else
-    prompt("It's a tie!")
-  end
-
+  prompt("The final score is #{score['Player']}-#{score['Computer']}. #{
+    winner} victory!")
   prompt('Play again? (y or n)')
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
