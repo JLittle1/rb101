@@ -79,7 +79,7 @@ loop do
   loop do
     prompt('Hit or stay?')
     answer = gets.chomp
-    break if answer == 'stay'
+    break if answer.downcase[0] == 's'
     prompt('You hit!')
     player_hand.push(deck.pop)
     prompt("Your hand: #{player_hand.inspect}")

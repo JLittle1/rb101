@@ -10,20 +10,20 @@ def prompt(msg)
 end
 
 # rubocop:disable Metrics/AbcSize
-def display_board(brd)
+def display_board(board)
   system 'clear'
   puts "You're #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}."
   puts ''
   puts '     |     |'
-  puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
+  puts "  #{board[1]}  |  #{board[2]}  |  #{board[3]}"
   puts '     |     |'
   puts '-----|-----|-----'
   puts '     |     |'
-  puts "  #{brd[4]}  |  #{brd[5]}  |  #{brd[6]}"
+  puts "  #{board[4]}  |  #{board[5]}  |  #{board[6]}"
   puts '     |     |'
   puts '-----|-----|-----'
   puts '     |     |'
-  puts "  #{brd[7]}  |  #{brd[8]}  |  #{brd[9]}"
+  puts "  #{board[7]}  |  #{board[8]}  |  #{board[9]}"
   puts '     |     |'
   puts ''
 end
@@ -35,28 +35,28 @@ def initialize_board
   new_board
 end
 
-def empty_squares(brd)
-  brd.keys.select { |num| brd[num] == INITIAL_MARKER }
+def empty_squares(board)
+  board.keys.select { |num| board[num] == INITIAL_MARKER }
 end
 
-def place_piece!(brd, player)
+def place_piece!(board, player)
   if player == :player
-    player_places_piece!(brd)
+    player_places_piece!(board)
   else
-    computer_places_piece!(brd)
+    computer_places_piece!(board)
   end
 end
 
-def player_places_piece!(brd)
+def player_places_piece!(board)
   square = ''
   loop do
-    prompt("Choose a square (#{joinor(empty_squares(brd))}):")
+    prompt("Choose a square (#{joinor(empty_squares(board))}):")
     square = gets.chomp.to_i
-    break if empty_squares(brd).include?(square)
+    break if empty_squares(board).include?(square)
     prompt("Sorry, that's not a valid choice.")
   end
 
-  brd[square] = PLAYER_MARKER
+  board[square] = PLAYER_MARKER
 end
 
 def joinor(arr, seperator=', ', word='or')
@@ -65,37 +65,37 @@ def joinor(arr, seperator=', ', word='or')
   arr[0...-1].join(seperator) + seperator + word + ' ' + arr[-1].to_s
 end
 
-def computer_places_piece!(brd)
-  square = find_winning_move(brd, COMPUTER_MARKER)
-  square ||= find_winning_move(brd, PLAYER_MARKER)
-  square ||= 5 if brd[5] == INITIAL_MARKER
-  square ||= empty_squares(brd).sample
-  brd[square] = COMPUTER_MARKER
+def computer_places_piece!(board)
+  square = find_winning_move(board, COMPUTER_MARKER)
+  square ||= find_winning_move(board, PLAYER_MARKER)
+  square ||= 5 if board[5] == INITIAL_MARKER
+  square ||= empty_squares(board).sample
+  board[square] = COMPUTER_MARKER
 end
 
-def find_winning_move(brd, marker)
+def find_winning_move(board, marker)
   WINNING_LINES.each do |line|
-    if brd.values_at(*line).count(marker) == 2
-      winning_move = empty_squares(brd).intersection(line)[0]
+    if board.values_at(*line).count(marker) == 2
+      winning_move = empty_squares(board).intersection(line)[0]
       return winning_move if winning_move
     end
   end
   nil
 end
 
-def board_full?(brd)
-  empty_squares(brd).empty?
+def board_full?(board)
+  empty_squares(board).empty?
 end
 
-def someone_won?(brd)
-  !!detect_winner(brd)
+def someone_won?(board)
+  !!detect_winner(board)
 end
 
-def detect_winner(brd)
+def detect_winner(board)
   WINNING_LINES.each do |line|
-    if brd.values_at(*line).count(PLAYER_MARKER) == 3
+    if board.values_at(*line).count(PLAYER_MARKER) == 3
       return 'Player'
-    elsif brd.values_at(*line).count(COMPUTER_MARKER) == 3
+    elsif board.values_at(*line).count(COMPUTER_MARKER) == 3
       return 'Computer'
     end
   end
@@ -121,7 +121,6 @@ end
 
 loop do
   score = { 'Player' => 0, 'Computer' => 0 }
-  winner = nil
   until score['Player'] == 5 || score['Computer'] == 5
 
     board = initialize_board
@@ -138,8 +137,8 @@ loop do
     if someone_won?(board)
       winner = detect_winner(board)
       score[winner] += 1
-      prompt("#{winner} won! The score is #{score['Player']}-#{
-        score['Computer']}")
+      prompt("#{winner} won! The score is Player: #{
+        score['Player']}, Computer: #{score['Computer']}")
     else
       prompt("It's a tie! The score is #{score['Player']}-#{
         score['Computer']}")
